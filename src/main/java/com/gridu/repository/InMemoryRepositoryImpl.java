@@ -42,8 +42,9 @@ public class InMemoryRepositoryImpl implements InMemoryRepository {
         return this.data;
     }
 
+    @Override
     public Optional<Record> findRecordByName(String name) {
-       return this.data.stream().filter(r -> r.getName().equals(name)).findFirst();
+        return this.data.stream().filter(r -> r.getName().equals(name)).findFirst();
     }
 
     @Override

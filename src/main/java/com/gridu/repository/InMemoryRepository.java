@@ -16,19 +16,18 @@ public interface InMemoryRepository {
      * @param name
      * @return Record associated with a name
      */
-    Optional<Record> findRecordByName(String name) throws ResourceNotFoundException;
+    Optional<Record> findRecordByName(String name);
 
     /**
      * @param name
      * @return all phone numbers associated with a name
      */
-    Set<String> findAllPhonesByName(String name) throws ResourceNotFoundException;
+    Set<String> findAllPhonesByName(String name);
 
     /**
      * add phone number for a name or create new record
      *
-     * @param name
-     * @param phone
+     * @param newRecord
      * @return newly created or updated Record
      */
     Record addRecord(Record newRecord);
@@ -40,6 +39,6 @@ public interface InMemoryRepository {
      * @throws ResourceNotFoundException if there is no such phone in repo
      */
 
-    void deleteRecordByName(String name) throws ResourceNotFoundException;
+    void deleteRecordByName(String name);
 
 }

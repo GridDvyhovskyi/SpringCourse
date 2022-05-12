@@ -1,7 +1,6 @@
 package com.gridu.controller;
 
 import com.gridu.exception.InvalidArgumentException;
-import com.gridu.exception.ResourceNotFoundException;
 import com.gridu.model.Payload;
 import com.gridu.model.Record;
 import com.gridu.service.PhoneBookService;
@@ -29,7 +28,7 @@ public class PhoneBookController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value="/records")
-    public Record createNewRecord(@RequestBody Payload payload)  throws InvalidArgumentException {
+    public Record createNewRecord(@RequestBody Payload payload) {
         if (payload==null){
             throw new InvalidArgumentException();
         }
@@ -38,13 +37,13 @@ public class PhoneBookController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value="/records/{name}")
-    public Set<String> findPhonesByName(@PathVariable String name) throws ResourceNotFoundException {
+    public Set<String> findPhonesByName(@PathVariable String name) {
         return service.getPhonesByName(name);
     }
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping ("/records/{name}")
-    public void deleteRecord(@PathVariable String name) throws ResourceNotFoundException {
+    public void deleteRecord(@PathVariable String name) {
         service.deleteRecordByName(name);
     }
 

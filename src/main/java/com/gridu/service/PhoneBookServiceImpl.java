@@ -1,33 +1,20 @@
 package com.gridu.service;
 
-import com.gridu.exception.InvalidArgumentException;
-import com.gridu.exception.ResourceNotFoundException;
 import com.gridu.model.Payload;
 import com.gridu.model.Record;
 import com.gridu.repository.InMemoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Service("phoneBookService")
 public class PhoneBookServiceImpl implements PhoneBookService {
-    @Autowired
     private InMemoryRepository repository;
 
+    @Autowired
     public PhoneBookServiceImpl(InMemoryRepository inMemoryRepository){
         repository = inMemoryRepository;
-    }
-
-    /**
-     * injection is supported on setter level
-     *
-     * @param repository
-     */
-    @Override
-    public void setRepository(InMemoryRepository repository) {
-        this.repository = repository;
     }
 
     /**
@@ -39,42 +26,31 @@ public class PhoneBookServiceImpl implements PhoneBookService {
     }
 
     @Override
-    public void deleteRecordByName(String name) throws ResourceNotFoundException {
-        Record record = this.repository.findRecordByName(name).
-                orElseThrow(() -> new ResourceNotFoundException("Name", name));
-        this.repository.deleteRecordByName(record.getName());
+    public void deleteRecordByName(String name)  {
+        this.repository.deleteRecordByName(name);
     }
 
     @Override
-    public Set<String> getPhonesByName(String name) throws ResourceNotFoundException {
+    public Set<String> getPhonesByName(String name)  {
         return this.repository.findAllPhonesByName(name);
     }
 
     @Override
-    public Record saveRecord(Payload payload) throws InvalidArgumentException {
-        try {
-            Record newRecord =
-                    new Record(payload.getName(), Set.of(payload.getPhone()));
-            return this.repository.addRecord(newRecord);
-        }
-        catch (Exception ex){
-            throw new InvalidArgumentException();
-        }
+    public Record saveRecord(Payload payload)  {
+        return this.updateRecord(payload.getName(), payload.getPhone());
     }
 
     @Override
     public Record updateRecord(String name, String newPhoneNumber) {
         Record foundRecord = this.repository.findRecordByName(name).orElse(null);
         if (foundRecord!=null){
-            Set<String> newPhones = new HashSet<>(foundRecord.getPhoneNumbers());
-            newPhones.add(newPhoneNumber);
-            foundRecord.setPhoneNumbers(newPhones);
+            foundRecord.addAnotherPhone(newPhoneNumber);
         }
         else {
             foundRecord = new Record(name, Set.of(newPhoneNumber));
+            this.repository.addRecord(foundRecord);
         }
         return foundRecord;
     }
-
 
 }
