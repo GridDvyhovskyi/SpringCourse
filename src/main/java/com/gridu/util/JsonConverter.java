@@ -8,7 +8,7 @@ import java.util.Calendar;
 
 public class JsonConverter {
 
-    public static String toJsonString(Object o){
+    public String toJsonString(Object o){
         ObjectMapper mapperObj = new ObjectMapper();
         try {
             return mapperObj.writeValueAsString(o);

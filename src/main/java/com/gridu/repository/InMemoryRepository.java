@@ -31,7 +31,7 @@ public interface InMemoryRepository {
      * @param phone
      * @return newly created or updated Record
      */
-    Record addPhone(String name, String phone);
+    Record addRecord(Record newRecord);
 
     /**
      * removes a record from set
